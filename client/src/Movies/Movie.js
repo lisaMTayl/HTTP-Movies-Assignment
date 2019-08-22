@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import MovieCard from "./MovieCard";
+import UpdateForm from "./UpdateForm";
+
 export default class Movie extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +33,27 @@ export default class Movie extends React.Component {
     addToSavedList(this.state.movie);
   };
 
+
+  updateHandler = () => {
+    // routes to updated movie
+    this.props.history.push(`/update-movie/${this.props.match.params.id}`)
+  };
+
+
+  deleteHandler = () => {
+    const movieToDelete = this.props.match.params.id;
+    axios
+      // delete selected movie
+      .delete(`http://localhost:5000/api/movies/${movieToDelete}`, movieToDelete)
+
+      // routes to list with deleted movie
+      .then(res => {
+        console.log("Movie to delete info: ", res);
+        this.props.history.push(`/`)
+      })
+      .catch(error => console.log("Error receiving movie to delete: ", error))
+  };
+
   render() {
     if (!this.state.movie) {
       return <div>Loading movie information...</div>;
@@ -42,7 +65,12 @@ export default class Movie extends React.Component {
         <div className="save-button" onClick={this.saveMovie}>
           Save
         </div>
+        {/*add button to open movie updating form*/}
+        <button onClick={this.updateHandler}>Edit</button>
+
+        {/*add button to delete movie*/}
+        <button onClick={this.deleteHandler}>Delete</button>
       </div>
-    );
+    )
   }
 }
