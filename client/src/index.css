@@ -75,3 +75,17 @@ body {
   color: red;
   text-align: center;
 }
+
+.update-form {
+  background-color: #ffffff;
+  padding: 2rem;
+}
+
+label {
+  font-weight: bolder;
+}
+
+input {
+  margin: 0 10px ;
+}
+

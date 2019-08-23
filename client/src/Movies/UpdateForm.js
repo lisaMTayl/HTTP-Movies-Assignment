@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Material UI for styling
+import Dividers from '@material-ui/core/Divider'
+
 
 // component to update movie data
 const UpdateForm = props => {
@@ -26,6 +29,12 @@ const UpdateForm = props => {
       .catch(error => console.log("Error when receiving movie info: ", error))
   }, [movieId]);
 
+  // map actors for form
+  const handleStar = index => e => {
+    setUpdatedMovie({...updatedMovie, stars: updatedMovie.stars.map((star, starIndex) => {
+        return starIndex === index ? e.target.value : star;
+      })});
+  };
 
   const onChangeHandler = event => {
     setUpdatedMovie({
@@ -54,21 +63,40 @@ const UpdateForm = props => {
   };
 
   return (
-    <form onSubmit={onSubmitHandler}>
-      <label>Title</label>
-      <input name='title' placeholder={updatedMovie.title} value={updatedMovie.title} onChange={onChangeHandler}/>
+    <div className="update-form">
+      <h2>{updatedMovie.title}</h2>
+      <Dividers />
+      <form onSubmit={onSubmitHandler}>
+        <p><label>Title: </label>
+          <input name='title' placeholder={updatedMovie.title} value={updatedMovie.title}
+                 onChange={onChangeHandler}/></p>
 
-      <label>Director</label>
-      <input name='director' placeholder={updatedMovie.director} value={updatedMovie.director} onChange={onChangeHandler} />
+        <p><label>Director: </label>
+          <input name='director' placeholder={updatedMovie.director} value={updatedMovie.director}
+                 onChange={onChangeHandler}/></p>
 
-      <label>Metascore</label>
-      <input name='metascore' placeholder={updatedMovie.metascore} value={updatedMovie.metascore} onChange={onChangeHandler} />
+        <p><label>Metascore: </label>
+          <input name='metascore' placeholder={updatedMovie.metascore} value={updatedMovie.metascore}
+                 onChange={onChangeHandler}/></p>
 
-      <label>Starring</label>
-      <input name='stars' placeholder={updatedMovie.stars} value={updatedMovie.stars} onChange={onChangeHandler}/>
+        <p><label>Starring: </label>
+          {/*<input name='stars' placeholder={updatedMovie.stars} value={updatedMovie.stars}*/}
+          {/*       onChange={onChangeHandler}/></p>*/}
 
-      <button onClick={onSubmitHandler}>Update</button>
-    </form>
+          {/*Properly map through and list the actors*/}
+          {updatedMovie.stars.map((starName, index) => {
+            return <input type="text"
+                          placeholder="star"
+                          value={starName}
+                          key={index}
+                          onChange={handleStar(index)}/>;
+          })}
+        </p>
+        <p>
+          <button onClick={onSubmitHandler}>Update Movie</button>
+        </p>
+      </form>
+    </div>
   )
 };
 export default UpdateForm;
