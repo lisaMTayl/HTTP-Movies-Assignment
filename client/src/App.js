@@ -3,6 +3,8 @@ import { Route } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
+// import form component to update movies
+import UpdateForm from "./Movies/UpdateForm";
 
 const App = () => {
   const [savedList, setSavedList] = useState([]);
@@ -12,7 +14,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <div>
       <SavedList list={savedList} />
       <Route exact path="/" component={MovieList} />
       <Route
@@ -21,8 +23,15 @@ const App = () => {
           return <Movie {...props} addToSavedList={addToSavedList} />;
         }}
       />
-    </>
+      {/*add route for updating movie form*/}
+      <Route
+        path="/update-movie/:id"
+        render={props => {
+          return <UpdateForm {...props} component={UpdateForm} />
+        }}/>
+    </div>
   );
 };
 
 export default App;
+
